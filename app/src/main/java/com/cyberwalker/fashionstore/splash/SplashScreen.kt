@@ -20,7 +20,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -85,7 +84,7 @@ private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashSc
             modifier = Modifier
                 .weight(1F)
                 .align(Alignment.CenterHorizontally).clickable {
-                    onAction(SplashScreenActions.LoadHome)
+                    onAction(SplashScreenActions.LoadLogin)
                 },
             painter = painterResource(id = R.drawable.splash_cta),
             contentDescription = null
@@ -94,5 +93,5 @@ private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashSc
 }
 
 sealed class SplashScreenActions {
-    object LoadHome : SplashScreenActions()
+    object LoadLogin : SplashScreenActions()
 }

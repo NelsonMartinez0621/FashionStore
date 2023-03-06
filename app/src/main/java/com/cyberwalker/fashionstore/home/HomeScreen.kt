@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -59,16 +59,19 @@ private fun HomeScreenContent(
     modifier: Modifier,
     onAction: (actions: HomeScreenActions) -> Unit,
 ) {
+    var mDisplayMenu by remember {
+        mutableStateOf(false)
+    }
     Column(
         modifier = modifier
             .fillMaxHeight()
             .verticalScroll(rememberScrollState())
             .semantics { contentDescription = "Home Screen" }
     ) {
-        Row(
+        TopAppBar(
             modifier = Modifier
                 .padding(32.dp)
-                .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
         ) {
             Box(
                 modifier = Modifier.size(width = 37.dp, height = 40.dp),
@@ -92,14 +95,25 @@ private fun HomeScreenContent(
                 Text(text = "Hi Babloo", style = MaterialTheme.typography.medium_14)
             }
             Spacer(modifier = Modifier.weight(1F))
-            Image(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clickable { }
-                    .padding(12.dp),
-                painter = painterResource(id = R.drawable.menu_bar),
-                contentDescription = null
-            )
+
+            IconButton(onClick = { mDisplayMenu = !mDisplayMenu }) {
+                Icon(painterResource(id = R.drawable.menu_bar),contentDescription = null)
+            }
+
+            DropdownMenu(expanded = mDisplayMenu, onDismissRequest = { mDisplayMenu = false }) {
+                DropdownMenuItem(onClick = { /*TODO*/ }) {
+                    Text(text = "Home")
+                }
+                DropdownMenuItem(onClick = { onAction(HomeScreenActions.Search) }) {
+                    Text(text = "Search")
+                }
+                DropdownMenuItem(onClick = { onAction(HomeScreenActions.Favorites) }) {
+                    Text(text = "Liked")
+                }
+                DropdownMenuItem(onClick = { onAction(HomeScreenActions.Profile) }) {
+                    Text(text = "Profile")
+                }
+            }
         }
 
         Row(
@@ -230,7 +244,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -259,7 +274,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -290,7 +306,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -319,7 +336,8 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
                     contentDescription = null,
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(end = 8.dp, top = 8.dp).clickable {  }
+                        .padding(end = 8.dp, top = 8.dp)
+                        .clickable { }
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -333,6 +351,12 @@ private fun GridOfImages(onAction: (actions: HomeScreenActions) -> Unit,) {
 }
 
 
+
+
 sealed class HomeScreenActions {
+    object Home : HomeScreenActions()
     object Details : HomeScreenActions()
+    object Favorites: HomeScreenActions()
+    object Search: HomeScreenActions()
+    object Profile: HomeScreenActions()
 }

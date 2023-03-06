@@ -53,7 +53,7 @@ fun BottomNav(navController: NavController, isDark: Boolean = isSystemInDarkThem
                 alwaysShowLabel = false,
                 selected = currentRoute == item.screen_route,
                 onClick = {
-
+                    navController.navigate(item.screen_route)
                 }
             )
         }
@@ -63,7 +63,7 @@ fun BottomNav(navController: NavController, isDark: Boolean = isSystemInDarkThem
 sealed class BottomNavItem(var title: String, var icon: Int, var screen_route: String) {
 
     object Home : BottomNavItem("Home", R.drawable.home, Screen.Home.route)
-    object Search : BottomNavItem("Search", R.drawable.search, "Search")
-    object Liked : BottomNavItem("Liked", R.drawable.liked, "Liked")
-    object Profile : BottomNavItem("Profile", R.drawable.profile, "Profile")
+    object Search : BottomNavItem("Search", R.drawable.search, Screen.Search.route)
+    object Liked : BottomNavItem("Liked", R.drawable.liked, Screen.Favorites.route)
+    object Profile : BottomNavItem("Profile", R.drawable.profile, Screen.Profile.route)
 }

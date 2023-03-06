@@ -18,16 +18,29 @@
 package com.cyberwalker.fashionstore.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.cyberwalker.fashionstore.detail.DetailScreen
 import com.cyberwalker.fashionstore.detail.DetailScreenActions
 import com.cyberwalker.fashionstore.dump.animatedComposable
+import com.cyberwalker.fashionstore.favorites.FavoritesScreen
+import com.cyberwalker.fashionstore.favorites.FavoritesScreenActions
 import com.cyberwalker.fashionstore.home.HomeScreen
 import com.cyberwalker.fashionstore.home.HomeScreenActions
+import com.cyberwalker.fashionstore.login.LoginScreen
+import com.cyberwalker.fashionstore.login.LoginScreenActions
+import com.cyberwalker.fashionstore.profile.ProfileScreen
+import com.cyberwalker.fashionstore.profile.ProfileScreenActions
+import com.cyberwalker.fashionstore.search.SearchScreen
+import com.cyberwalker.fashionstore.search.SearchScreenActions
+import com.cyberwalker.fashionstore.signup.SignUpScreen
+import com.cyberwalker.fashionstore.signup.SignUpScreenActions
 import com.cyberwalker.fashionstore.splash.SplashScreen
 import com.cyberwalker.fashionstore.splash.SplashScreenActions
 import com.google.accompanist.navigation.animation.AnimatedNavHost
@@ -37,6 +50,12 @@ sealed class Screen(val name: String, val route: String) {
     object Splash : Screen("splash", "splash")
     object Home : Screen("home", "home")
     object Detail : Screen("detail", "detail")
+    object SignUp: Screen("signup", "signup")
+    object Login: Screen("login", "login")
+    object Favorites: Screen("favorites","favorites")
+    object Search: Screen("search","search")
+    object Profile: Screen("profile", "profile")
+
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -54,39 +73,108 @@ fun FashionNavGraph(
         modifier = modifier
     ) {
         animatedComposable(Screen.Splash.route) {
-            SplashScreen(onAction = actions::navigateToHome)
+            SplashScreen(onAction = actions::navigateToSignUp)
         }
 
         animatedComposable(Screen.Home.route) {
-            HomeScreen(onAction = actions::navigateFromHome,navController = navController)
+            HomeScreen(onAction = actions::navigateFromHome, navController = navController)
         }
 
         animatedComposable(Screen.Detail.route) {
             DetailScreen(onAction = actions::navigateFromDetails)
         }
+
+        animatedComposable(route = Screen.SignUp.route){
+            SignUpScreen(onAction = actions::navigateFromSignUp, navController = navController)
+        }
+
+        animatedComposable(Screen.Login.route) {
+            LoginScreen(onAction = actions::navigateFromLogin, navController = navController)
+        }
+
+        animatedComposable(Screen.Favorites.route) {
+            FavoritesScreen(onAction = actions::navigateFromFavorites)
+        }
+
+        animatedComposable(Screen.Search.route) {
+            SearchScreen(onAction = actions::navigateFromSearch)
+        }
+
+        animatedComposable(Screen.Profile.route) {
+            ProfileScreen(onAction = actions::navigateFromProfile)
+        }
+
+
     }
 }
 
 class NavActions(private val navController: NavController) {
-    fun navigateToHome(_A: SplashScreenActions) {
-        navController.navigate(Screen.Home.name) {
+    fun navigateToSignUp(_A: SplashScreenActions) {
+        navController.navigate(Screen.Login.name) {
             popUpTo(Screen.Splash.route){
                 inclusive = true
             }
         }
     }
 
+    fun navigateFromLogin(actions: LoginScreenActions) {
+        when (actions) {
+            LoginScreenActions.Home -> {
+                navController.navigate(Screen.Home.name)
+            }
+        }
+    }
+
+    fun navigateFromSignUp(actions: SignUpScreenActions) {
+        when (actions) {
+            SignUpScreenActions.Home -> {
+                navController.navigate(Screen.SignUp.route)
+            }
+        }
+    }
+
     fun navigateFromHome(actions: HomeScreenActions) {
         when (actions) {
+            HomeScreenActions.Home -> {
+                navController.navigate(Screen.Home.name)
+            }
             HomeScreenActions.Details -> {
                 navController.navigate(Screen.Detail.name)
             }
+
+            HomeScreenActions.Favorites -> {
+                navController.navigate(Screen.Favorites.name)
+            }
+
+            HomeScreenActions.Profile -> {
+                navController.navigate(Screen.Profile.name)
+            }
+
+            HomeScreenActions.Search -> {
+                navController.navigate(Screen.Search.name)
+            }
+        }
+    }
+
+    fun navigateFromFavorites(actions: FavoritesScreenActions) {
+        when(actions) {
+            FavoritesScreenActions.Home -> navController.popBackStack()
         }
     }
 
     fun navigateFromDetails(actions: DetailScreenActions) {
         when(actions) {
             DetailScreenActions.Back -> navController.popBackStack()
+        }
+    }
+    fun navigateFromSearch(actions: SearchScreenActions) {
+        when(actions) {
+            SearchScreenActions.Back -> navController.popBackStack()
+        }
+    }
+    fun navigateFromProfile(actions: ProfileScreenActions) {
+        when(actions) {
+            ProfileScreenActions.Back -> navController.popBackStack()
         }
     }
 }
