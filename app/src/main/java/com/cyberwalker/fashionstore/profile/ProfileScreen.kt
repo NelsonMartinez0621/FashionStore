@@ -1,47 +1,73 @@
 package com.cyberwalker.fashionstore.profile
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.cyberwalker.fashionstore.dump.BottomNav
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, onAction: (actions: ProfileScreenActions) -> Unit){
-    Surface {
-        TopBar(modifier = modifier, onAction = onAction)
-        ProfileScreenContent()
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    onAction: (actions: ProfileScreenActions) -> Unit,
+    navController: NavController
+){
+    Scaffold(
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            BottomNav(navController = navController)
+        }
+    ) { paddingValues ->
+        ProfileScreenContent(modifier = modifier.padding(paddingValues), onAction = onAction )
     }
 }
 
 @Composable
 fun TopBar(modifier: Modifier = Modifier, onAction: (actions: ProfileScreenActions) -> Unit){
-    Surface(modifier.fillMaxWidth()) {
+    var mDisplayMenu by remember {
+        mutableStateOf(false)
+    }
+    Surface {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+            ) {
             IconButton(onClick = { onAction(ProfileScreenActions.Back) }) {
                 Icon(imageVector = Icons.Filled.Close, contentDescription = "close")
             }
             Text(text = "Profile")
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = Icons.Filled.Add, contentDescription = "close")
+            Box {
+                IconButton(onClick = { mDisplayMenu = !mDisplayMenu }) {
+                    Icon(imageVector = Icons.Filled.Menu, contentDescription = "close")
+                }
+                DropdownMenu(expanded = mDisplayMenu, onDismissRequest = { mDisplayMenu = false }) {
+                    DropdownMenuItem(onClick = { onAction(ProfileScreenActions.Home) }) {
+                        Text(text = "Home")
+                    }
+                    DropdownMenuItem(onClick = { onAction(ProfileScreenActions.Search) }) {
+                        Text(text = "Search")
+                    }
+                    DropdownMenuItem(onClick = { onAction(ProfileScreenActions.Favorites) }) {
+                        Text(text = "Liked")
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-fun ProfileScreenContent(modifier: Modifier = Modifier) {
+fun ProfileScreenContent(modifier: Modifier = Modifier, onAction: (actions: ProfileScreenActions) -> Unit) {
     Surface(modifier = modifier.fillMaxSize()) {
+        TopBar(onAction = onAction)
         Column(modifier = modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = "Profile Screen")
         }
@@ -49,5 +75,9 @@ fun ProfileScreenContent(modifier: Modifier = Modifier) {
 }
 
 sealed class ProfileScreenActions {
+    object Home: ProfileScreenActions()
+    object Favorites: ProfileScreenActions()
+    object Search: ProfileScreenActions()
+    object Profile: ProfileScreenActions()
     object Back: ProfileScreenActions()
 }

@@ -74,7 +74,7 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 color = colors.primary,
-                style = MaterialTheme.typography.h1,
+                style = MaterialTheme.typography.h3,
                 textAlign = TextAlign.Center
             )
 
@@ -187,7 +187,8 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {
-                    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    val gso = GoogleSignInOptions
+                        .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
                         .requestIdToken(serverClient)
                         .build()
@@ -199,17 +200,6 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                     Icon(painter = painterResource(
                         id = R.drawable.google__g__logo),
                         contentDescription = "Google Icon",
-                        modifier = Modifier.size(50.dp),
-                        tint = Color.Unspecified
-                    )
-                }
-
-                Spacer(modifier = Modifier.width(20.dp))
-
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(painter = painterResource(
-                        id = R.drawable.facebook_f_logo),
-                        contentDescription = "Facebook Icon",
                         modifier = Modifier.size(50.dp),
                         tint = Color.Unspecified
                     )
@@ -237,8 +227,8 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                 LaunchedEffect(key1 = googleSignInState.success) {
                     scope.launch {
                         if (googleSignInState.success != null) {
-                            val error = state.value?.isError
-                            Toast.makeText(context,"Sign In Success", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context,"Login Success", Toast.LENGTH_LONG).show()
+                            onAction(LoginScreenActions.Home)
                         }
                     }
                 }

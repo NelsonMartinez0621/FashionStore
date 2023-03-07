@@ -71,7 +71,8 @@ private fun HomeScreenContent(
         TopAppBar(
             modifier = Modifier
                 .padding(32.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            backgroundColor = Color.Transparent
         ) {
             Box(
                 modifier = Modifier.size(width = 37.dp, height = 40.dp),
@@ -96,22 +97,21 @@ private fun HomeScreenContent(
             }
             Spacer(modifier = Modifier.weight(1F))
 
-            IconButton(onClick = { mDisplayMenu = !mDisplayMenu }) {
-                Icon(painterResource(id = R.drawable.menu_bar),contentDescription = null)
-            }
+            Box {
+                IconButton(onClick = { mDisplayMenu = !mDisplayMenu }) {
+                    Icon(painterResource(id = R.drawable.menu_bar),contentDescription = null)
+                }
 
-            DropdownMenu(expanded = mDisplayMenu, onDismissRequest = { mDisplayMenu = false }) {
-                DropdownMenuItem(onClick = { /*TODO*/ }) {
-                    Text(text = "Home")
-                }
-                DropdownMenuItem(onClick = { onAction(HomeScreenActions.Search) }) {
-                    Text(text = "Search")
-                }
-                DropdownMenuItem(onClick = { onAction(HomeScreenActions.Favorites) }) {
-                    Text(text = "Liked")
-                }
-                DropdownMenuItem(onClick = { onAction(HomeScreenActions.Profile) }) {
-                    Text(text = "Profile")
+                DropdownMenu(expanded = mDisplayMenu, onDismissRequest = { mDisplayMenu = false }) {
+                    DropdownMenuItem(onClick = { onAction(HomeScreenActions.Search) }) {
+                        Text(text = "Search")
+                    }
+                    DropdownMenuItem(onClick = { onAction(HomeScreenActions.Favorites) }) {
+                        Text(text = "Liked")
+                    }
+                    DropdownMenuItem(onClick = { onAction(HomeScreenActions.Profile) }) {
+                        Text(text = "Profile")
+                    }
                 }
             }
         }

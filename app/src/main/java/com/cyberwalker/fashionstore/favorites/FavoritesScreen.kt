@@ -19,16 +19,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.cyberwalker.fashionstore.R
+import com.cyberwalker.fashionstore.dump.BottomNav
 
 
 @Composable
-fun FavoritesScreen(modifier: Modifier = Modifier, onAction: (actions:FavoritesScreenActions) -> Unit){
-    Surface(modifier = Modifier.padding(4.dp)) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            TopBar(modifier, onAction = onAction)
-            FavoritesFashions(modifier)
+fun FavoritesScreen(
+    modifier: Modifier = Modifier,
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    onAction: (actions:FavoritesScreenActions) -> Unit,
+    navController: NavController){
+    Scaffold(
+        scaffoldState = scaffoldState,
+        bottomBar = {
+            BottomNav(navController = navController)
         }
+    ) { paddingValues ->
+        FavoritesScreenContent(modifier = modifier.padding(paddingValues), onAction = onAction )
     }
 }
 
@@ -52,7 +60,17 @@ fun TopBar(modifier: Modifier = Modifier, onAction: (actions:FavoritesScreenActi
 }
 
 @Composable
-private fun FavoritesFashions(
+fun FavoritesScreenContent(
+    modifier: Modifier,
+    onAction: (actions: FavoritesScreenActions) -> Unit){
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        TopBar(modifier, onAction = onAction)
+        FavoritesFashions(modifier)
+    }
+}
+
+@Composable
+fun FavoritesFashions(
     modifier: Modifier = Modifier,
     names: List<String> = List(10) {"$it"}
 ) {
@@ -120,4 +138,5 @@ fun FavoriteFashionCard(
 
 sealed class FavoritesScreenActions {
     object Home : FavoritesScreenActions()
+    object Back : FavoritesScreenActions()
 }

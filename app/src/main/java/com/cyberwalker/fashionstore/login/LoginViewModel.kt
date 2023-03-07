@@ -58,12 +58,4 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-
-//    private val _loginResultState: MutableStateFlow<Boolean> = MutableStateFlow(false)
-//    val loginResultState: StateFlow<Boolean> = _loginResultState
-//
-//    fun onLogin(email: String, password: String) {
-//        //send it to repository and get result from server and return to UI
-//        _loginResultState.value = true
-//    }
 }

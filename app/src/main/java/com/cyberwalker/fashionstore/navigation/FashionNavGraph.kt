@@ -93,15 +93,15 @@ fun FashionNavGraph(
         }
 
         animatedComposable(Screen.Favorites.route) {
-            FavoritesScreen(onAction = actions::navigateFromFavorites)
+            FavoritesScreen(onAction = actions::navigateFromFavorites, navController = navController)
         }
 
         animatedComposable(Screen.Search.route) {
-            SearchScreen(onAction = actions::navigateFromSearch)
+            SearchScreen(onAction = actions::navigateFromSearch, navController = navController)
         }
 
         animatedComposable(Screen.Profile.route) {
-            ProfileScreen(onAction = actions::navigateFromProfile)
+            ProfileScreen(onAction = actions::navigateFromProfile, navController = navController)
         }
 
 
@@ -158,23 +158,53 @@ class NavActions(private val navController: NavController) {
 
     fun navigateFromFavorites(actions: FavoritesScreenActions) {
         when(actions) {
-            FavoritesScreenActions.Home -> navController.popBackStack()
+            FavoritesScreenActions.Back -> navController.popBackStack()
+
+            FavoritesScreenActions.Home -> {
+                navController.navigate(Screen.Home.name)
+            }
+            FavoritesScreenActions.Home -> {
+                navController.navigate(Screen.Home.name)
+            }
         }
     }
 
     fun navigateFromDetails(actions: DetailScreenActions) {
         when(actions) {
             DetailScreenActions.Back -> navController.popBackStack()
+            DetailScreenActions.Home -> {
+                navController.navigate(Screen.Home.name)
+            }
         }
     }
     fun navigateFromSearch(actions: SearchScreenActions) {
         when(actions) {
             SearchScreenActions.Back -> navController.popBackStack()
+
+            SearchScreenActions.Home -> {
+                navController.navigate(Screen.Home.name)
+            }
+            SearchScreenActions.Favorites -> {
+                navController.navigate(Screen.Favorites.name)
+            }
+            SearchScreenActions.Profile -> {
+                navController.navigate(Screen.Profile.name)
+            }
         }
     }
     fun navigateFromProfile(actions: ProfileScreenActions) {
         when(actions) {
             ProfileScreenActions.Back -> navController.popBackStack()
+
+            ProfileScreenActions.Home -> {
+                navController.navigate(Screen.Home.name)
+            }
+            ProfileScreenActions.Search -> {
+                navController.navigate(Screen.Search.name)
+            }
+            ProfileScreenActions.Favorites -> {
+                navController.navigate(Screen.Favorites.name)
+            }
         }
     }
 }

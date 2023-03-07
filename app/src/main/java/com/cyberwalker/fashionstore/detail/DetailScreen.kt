@@ -215,7 +215,7 @@ private fun ImageBox(onAction: (actions: DetailScreenActions) -> Unit) {
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(start = 16.dp, top = 16.dp)
-                .clickable { onAction(DetailScreenActions.Back) },
+                .clickable { onAction(DetailScreenActions.Home) },
             painter = painterResource(id = R.drawable.ic_back),
             contentDescription = null
         )
@@ -278,5 +278,6 @@ private fun TabRow() {
 }
 
 sealed class DetailScreenActions {
+    object Home : DetailScreenActions()
     object Back : DetailScreenActions()
 }
