@@ -204,6 +204,10 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                         tint = Color.Unspecified
                     )
                 }
+                
+                Button(onClick = { throw RuntimeException("Test Crash") }) {
+                    Text(text = "Test Crash")
+                }
 
                 LaunchedEffect(key1 = state.value?.isSuccess) {
                     scope.launch {
@@ -219,7 +223,8 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                     scope.launch {
                         if (state.value?.isError?.isNotEmpty() == true) {
                             val error = state.value?.isError
-                            Toast.makeText(context,"$error", Toast.LENGTH_LONG).show()
+                            throw IllegalStateException("$error")
+
                         }
                     }
                 }
@@ -237,7 +242,7 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                     scope.launch {
                         if (googleSignInState.error?.isNotEmpty() == true) {
                             val error = state.value?.isError
-                            Toast.makeText(context,"$error", Toast.LENGTH_LONG).show()
+                            throw IllegalStateException("${error}")
                         }
                     }
                 }
