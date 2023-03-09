@@ -214,8 +214,8 @@ class NavActions(private val navController: NavController) {
             ProfileScreenActions.Favorites -> {
                 navController.navigate(Screen.Favorites.name)
             }
-            ProfileScreenActions.Profile -> {
-                navController.navigate(Screen.Profile.name)
+            ProfileScreenActions.Login -> {
+                navController.navigate(Screen.Login.name)
             }
         }
     }
