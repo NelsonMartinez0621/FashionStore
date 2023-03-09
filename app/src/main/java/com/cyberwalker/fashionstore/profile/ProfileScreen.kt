@@ -123,7 +123,6 @@ sealed class ProfileScreenActions {
     object Home : ProfileScreenActions()
     object Favorites : ProfileScreenActions()
     object Search : ProfileScreenActions()
-    object Profile : ProfileScreenActions()
     object Login : ProfileScreenActions()
     object Back : ProfileScreenActions()
 }

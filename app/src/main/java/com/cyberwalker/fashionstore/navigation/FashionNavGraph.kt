@@ -70,7 +70,7 @@ fun FashionNavGraph(
         modifier = modifier
     ) {
         animatedComposable(Screen.Splash.route) {
-            SplashScreen(onAction = actions::navigateToSignUp)
+            SplashScreen(onAction = actions::navigateFromSplash)
         }
 
         animatedComposable(Screen.Home.route) {
@@ -106,7 +106,7 @@ fun FashionNavGraph(
 }
 
 class NavActions(private val navController: NavController) {
-    fun navigateToSignUp(actions: SplashScreenActions) {
+    fun navigateFromSplash(actions: SplashScreenActions) {
         when (actions) {
             SplashScreenActions.LoadLogin -> {
                 navController.navigate(Screen.Login.name) {
@@ -131,13 +131,19 @@ class NavActions(private val navController: NavController) {
             LoginScreenActions.Home -> {
                 navController.navigate(Screen.Home.name)
             }
+            LoginScreenActions.SignUp -> {
+                navController.navigate(Screen.SignUp.name)
+            }
         }
     }
 
     fun navigateFromSignUp(actions: SignUpScreenActions) {
         when (actions) {
             SignUpScreenActions.Home -> {
-                navController.navigate(Screen.SignUp.route)
+                navController.navigate(Screen.Home.route)
+            }
+            SignUpScreenActions.Login -> {
+                navController.navigate(Screen.Login.name)
             }
         }
     }
