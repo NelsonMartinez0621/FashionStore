@@ -1,5 +1,6 @@
 package com.cyberwalker.fashionstore.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -8,13 +9,14 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.cyberwalker.fashionstore.dump.BottomNav
 import com.cyberwalker.fashionstore.profile.components.ImageBox
 import com.cyberwalker.fashionstore.profile.components.LogoutButton
 import com.cyberwalker.fashionstore.profile.components.ProfileInfo
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
@@ -70,8 +72,14 @@ fun TopBar(modifier: Modifier = Modifier, onAction: (actions: ProfileScreenActio
 @Composable
 fun ProfileScreenContent(
     modifier: Modifier = Modifier,
-    onAction: (actions: ProfileScreenActions) -> Unit
+    onAction: (actions: ProfileScreenActions) -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
+
+    val state = viewModel.logoutState.collectAsState(initial = null)
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+
     Surface(modifier = modifier.fillMaxSize()) {
         TopBar(onAction = onAction)
         Column(
@@ -83,7 +91,30 @@ fun ProfileScreenContent(
             ProfileInfo(onContinueClicked = { }, info = "", label = "Name")
             ProfileInfo(onContinueClicked = { }, info = "", label = "Last Name")
             ProfileInfo(onContinueClicked = { }, info = "", label = "Email")
-            LogoutButton(onContinueClicked = {})
+            LogoutButton(viewModel = viewModel)
+
+            LaunchedEffect(key1 = state.value?.isSuccess) {
+                scope.launch {
+                    if (state.value?.isSuccess?.isNotEmpty() == true) {
+                        val success = state.value?.isSuccess
+                        Toast.makeText(context,"$success", Toast.LENGTH_LONG).show()
+                        onAction(ProfileScreenActions.Home)
+                    }
+                }
+            }
+            LaunchedEffect(key1 = state.value?.isError) {
+                scope.launch {
+                    if (state.value?.isError?.isNotEmpty() == true) {
+                        val error = state.value?.isError
+                        throw IllegalStateException("$error")
+                    }
+                }
+            }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                if (state.value?.isLoading==true) {
+                    CircularProgressIndicator()
+                }
+            }
         }
     }
 }

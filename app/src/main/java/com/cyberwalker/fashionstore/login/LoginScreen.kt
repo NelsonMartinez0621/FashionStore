@@ -35,7 +35,10 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: NavController, loginViewModel: LoginViewModel = hiltViewModel()) {
+fun LoginScreen(
+    onAction: (actions: LoginScreenActions) -> Unit,
+    navController: NavController,
+    loginViewModel: LoginViewModel = hiltViewModel()) {
 
     val googleSignInState = loginViewModel.googleState.value
 
@@ -223,8 +226,7 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                     scope.launch {
                         if (state.value?.isError?.isNotEmpty() == true) {
                             val error = state.value?.isError
-                            throw IllegalStateException("$error")
-
+                            Toast.makeText(context,"$error", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
@@ -242,7 +244,7 @@ fun LoginScreen(onAction: (actions: LoginScreenActions) -> Unit, navController: 
                     scope.launch {
                         if (googleSignInState.error?.isNotEmpty() == true) {
                             val error = state.value?.isError
-                            throw IllegalStateException("${error}")
+                            Toast.makeText(context,"$error", Toast.LENGTH_LONG).show()
                         }
                     }
                 }
