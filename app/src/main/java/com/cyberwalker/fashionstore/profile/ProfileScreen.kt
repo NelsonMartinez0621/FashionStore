@@ -98,7 +98,7 @@ fun ProfileScreenContent(
                     if (state.value?.isSuccess?.isNotEmpty() == true) {
                         val success = state.value?.isSuccess
                         Toast.makeText(context,"$success", Toast.LENGTH_LONG).show()
-                        onAction(ProfileScreenActions.Profile)
+                        onAction(ProfileScreenActions.Login)
                     }
                 }
             }
@@ -123,6 +123,6 @@ sealed class ProfileScreenActions {
     object Home : ProfileScreenActions()
     object Favorites : ProfileScreenActions()
     object Search : ProfileScreenActions()
-    object Profile : ProfileScreenActions()
+    object Login : ProfileScreenActions()
     object Back : ProfileScreenActions()
 }

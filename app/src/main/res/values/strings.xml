@@ -4,10 +4,16 @@
     <string name="signup_title">Sign Up</string>
     <string name="generic_email">Email</string>
     <string name="generic_password">Password</string>
+    <string name="generic_first_name">First Name</string>
+    <string name="generic_last_name">Last Name</string>
+    <string name="generic_first_name_placeholder">Johnny</string>
+    <string name="generic_last_name_placeholder">Appleseed</string>
     <string name="generic_email_placeholder">someone@email.com</string>
     <string name="generic_password_placeholder">******</string>.
     <string name="signup_message">Enter your credentials to register</string>
-    <string name="existing_account_message">Already have an account? Sign in</string>
-    <string name="create_account_message">Don\'t have an account? Create one</string>
+    <string name="existing_account_message">Already have an account? </string>
+    <string name="create_account_message">Don\'t have an account? </string>
+    <string name="create_account_message_link">Create one</string>
+    <string name="existing_account_message_link">Sign in</string>
     <string name="other_signin_login_options_message">or connect with</string>
 </resources>
