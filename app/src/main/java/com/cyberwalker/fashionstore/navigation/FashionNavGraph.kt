@@ -106,10 +106,22 @@ fun FashionNavGraph(
 }
 
 class NavActions(private val navController: NavController) {
-    fun navigateToSignUp(_A: SplashScreenActions) {
-        navController.navigate(Screen.Login.name) {
-            popUpTo(Screen.Splash.route){
-                inclusive = true
+    fun navigateToSignUp(actions: SplashScreenActions) {
+        when (actions) {
+            SplashScreenActions.LoadLogin -> {
+                navController.navigate(Screen.Login.name) {
+                    popUpTo(Screen.Splash.route){
+                        inclusive = true
+                    }
+                }
+            }
+
+            SplashScreenActions.Home -> {
+                navController.navigate(Screen.Home.name) {
+                    popUpTo(Screen.Splash.route){
+                        inclusive = true
+                    }
+                }
             }
         }
     }

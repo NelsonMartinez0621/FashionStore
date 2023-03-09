@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cyberwalker.fashionstore.data.authorization.AuthRepository
 import com.cyberwalker.fashionstore.util.Resource
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -34,4 +35,6 @@ class ProfileViewModel @Inject constructor(
             }
         }
     }
+
+    fun isAuthorized(): FirebaseUser? = repository.isAuthorized()
 }

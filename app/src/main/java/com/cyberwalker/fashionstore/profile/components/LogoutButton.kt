@@ -7,19 +7,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.cyberwalker.fashionstore.profile.ProfileScreenActions
 import com.cyberwalker.fashionstore.profile.ProfileViewModel
 
 
 @Composable
 fun LogoutButton(
-    viewModel: ProfileViewModel,
+    viewModel: ProfileViewModel
 ) {
     Button(
         modifier = Modifier
             .padding(vertical = 24.dp),
-        onClick = {viewModel.logoutUser()}
+        onClick = { viewModel.logoutUser() }
     ) {
-        Text("Logout")
+        if (viewModel.isAuthorized() != null) {
+            Text(text = "Logout")
+        } else {
+            Text(text = "Login")
+        }
     }
 }
 
