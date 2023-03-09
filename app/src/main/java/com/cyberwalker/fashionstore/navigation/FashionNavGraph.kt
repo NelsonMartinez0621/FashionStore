@@ -18,12 +18,9 @@
 package com.cyberwalker.fashionstore.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.cyberwalker.fashionstore.detail.DetailScreen
@@ -109,10 +106,22 @@ fun FashionNavGraph(
 }
 
 class NavActions(private val navController: NavController) {
-    fun navigateToSignUp(_A: SplashScreenActions) {
-        navController.navigate(Screen.Login.name) {
-            popUpTo(Screen.Splash.route){
-                inclusive = true
+    fun navigateToSignUp(actions: SplashScreenActions) {
+        when (actions) {
+            SplashScreenActions.LoadLogin -> {
+                navController.navigate(Screen.Login.name) {
+                    popUpTo(Screen.Splash.route){
+                        inclusive = true
+                    }
+                }
+            }
+
+            SplashScreenActions.Home -> {
+                navController.navigate(Screen.Home.name) {
+                    popUpTo(Screen.Splash.route){
+                        inclusive = true
+                    }
+                }
             }
         }
     }
@@ -204,6 +213,9 @@ class NavActions(private val navController: NavController) {
             }
             ProfileScreenActions.Favorites -> {
                 navController.navigate(Screen.Favorites.name)
+            }
+            ProfileScreenActions.Profile -> {
+                navController.navigate(Screen.Profile.name)
             }
         }
     }

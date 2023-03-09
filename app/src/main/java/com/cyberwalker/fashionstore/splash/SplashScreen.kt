@@ -33,6 +33,8 @@ import com.cyberwalker.fashionstore.R
 import com.cyberwalker.fashionstore.ui.theme.dark
 import com.cyberwalker.fashionstore.ui.theme.large
 import com.cyberwalker.fashionstore.ui.theme.small_caption
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 @Composable
 fun SplashScreen(
@@ -49,6 +51,7 @@ fun SplashScreen(
 
 @Composable
 private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashScreenActions) -> Unit) {
+    val auth: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     Column(
         modifier = modifier
             .padding(40.dp)
@@ -84,7 +87,11 @@ private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashSc
             modifier = Modifier
                 .weight(1F)
                 .align(Alignment.CenterHorizontally).clickable {
-                    onAction(SplashScreenActions.LoadLogin)
+                    if (auth != null){
+                        onAction(SplashScreenActions.Home)
+                    } else {
+                        onAction(SplashScreenActions.LoadLogin)
+                    }
                 },
             painter = painterResource(id = R.drawable.splash_cta),
             contentDescription = null
@@ -94,4 +101,5 @@ private fun SplashScreenContent(modifier: Modifier, onAction: (actions: SplashSc
 
 sealed class SplashScreenActions {
     object LoadLogin : SplashScreenActions()
+    object Home: SplashScreenActions()
 }

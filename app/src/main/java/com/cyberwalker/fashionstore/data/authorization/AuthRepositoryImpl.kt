@@ -4,6 +4,7 @@ import com.cyberwalker.fashionstore.util.Resource
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -53,5 +54,19 @@ class AuthRepositoryImpl @Inject constructor(
             //Catch the exceptions
             emit(Resource.Error(it.message.toString()))
         }
+    }
+
+    override fun logoutUser(): Flow<Resource<Unit>> {
+        return flow {
+            emit(Resource.Loading())
+            val result = firebaseAuth.signOut()
+            emit(Resource.Success(result))
+        }.catch {
+            emit(Resource.Error(it.message.toString()))
+        }
+    }
+
+    override fun isAuthorized(): FirebaseUser? {
+        return firebaseAuth.currentUser
     }
 }
