@@ -20,7 +20,6 @@ import com.cyberwalker.fashionstore.profile.dataModel.User
 import androidx.compose.runtime.livedata.observeAsState
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -101,8 +100,8 @@ fun ProfileScreenContent(
                 scope.launch {
                     if (state.value?.isSuccess?.isNotEmpty() == true) {
                         val success = state.value?.isSuccess
-                        Toast.makeText(context, "$success", Toast.LENGTH_LONG).show()
-                        onAction(ProfileScreenActions.Profile)
+                        Toast.makeText(context,"$success", Toast.LENGTH_LONG).show()
+                        onAction(ProfileScreenActions.Login)
                     }
                 }
             }
@@ -115,7 +114,7 @@ fun ProfileScreenContent(
                 }
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                if (state.value?.isLoading == true) {
+                if (state.value?.isLoading==true) {
                     CircularProgressIndicator()
                 }
             }
@@ -127,6 +126,6 @@ sealed class ProfileScreenActions {
     object Home : ProfileScreenActions()
     object Favorites : ProfileScreenActions()
     object Search : ProfileScreenActions()
-    object Profile : ProfileScreenActions()
+    object Login : ProfileScreenActions()
     object Back : ProfileScreenActions()
 }

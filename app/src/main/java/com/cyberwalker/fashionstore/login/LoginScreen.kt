@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -173,10 +174,18 @@ fun LoginScreen(
                     CircularProgressIndicator()
                 }
             }
-            Text(
-                text = stringResource(id = R.string.create_account_message),
-                fontWeight = FontWeight.Bold
-            )
+            Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                Text(
+                    text = stringResource(id = R.string.create_account_message),
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = stringResource(id = R.string.create_account_message_link),
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Blue,
+                    modifier = Modifier.clickable(onClick = { onAction(LoginScreenActions.SignUp) })
+                )
+            }
             Text(
                 text = stringResource(id = R.string.other_signin_login_options_message),
                 fontWeight = FontWeight.Medium,
@@ -260,4 +269,5 @@ fun LoginScreen(
 }
 sealed class LoginScreenActions {
     object Home : LoginScreenActions()
+    object SignUp: LoginScreenActions()
 }
