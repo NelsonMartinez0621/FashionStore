@@ -16,6 +16,8 @@ import com.cyberwalker.fashionstore.dump.BottomNav
 import com.cyberwalker.fashionstore.profile.components.ImageBox
 import com.cyberwalker.fashionstore.profile.components.LogoutButton
 import com.cyberwalker.fashionstore.profile.components.ProfileInfo
+import com.cyberwalker.fashionstore.profile.dataModel.User
+import androidx.compose.runtime.livedata.observeAsState
 import kotlinx.coroutines.launch
 
 @Composable
@@ -79,6 +81,7 @@ fun ProfileScreenContent(
     val state = viewModel.logoutState.collectAsState(initial = null)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
+    val user: State<User?> = viewModel.user.observeAsState()
 
     Surface(modifier = modifier.fillMaxSize()) {
         TopBar(onAction = onAction)
@@ -88,9 +91,9 @@ fun ProfileScreenContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ImageBox(onContinueClicked = { }, imageUrl = "")
-            ProfileInfo(onContinueClicked = { }, info = "", label = "Name")
-            ProfileInfo(onContinueClicked = { }, info = "", label = "Last Name")
-            ProfileInfo(onContinueClicked = { }, info = "", label = "Email")
+            user.value?.let { ProfileInfo(onContinueClicked = { }, info = it.name, label = "Name") }
+            user.value?.let { ProfileInfo(onContinueClicked = { }, info = it.lastName, label = "Last Name") }
+            user.value?.let { ProfileInfo(onContinueClicked = { }, info = it.email, label = "Email") }
             LogoutButton(viewModel = viewModel)
 
             LaunchedEffect(key1 = state.value?.isSuccess) {
