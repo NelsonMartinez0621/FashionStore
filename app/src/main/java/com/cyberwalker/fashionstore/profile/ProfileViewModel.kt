@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.cyberwalker.fashionstore.data.authorization.AuthRepository
 import com.cyberwalker.fashionstore.profile.dataModel.User
 import com.cyberwalker.fashionstore.util.Resource
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -26,6 +28,7 @@ class ProfileViewModel @Inject constructor(
     val logoutState = _logoutState.receiveAsFlow()
     private val firebaseData: FirebaseFirestore = Firebase.firestore
     private val _user = MutableLiveData<User>()
+    private val firebaseAuth: FirebaseAuth = Firebase.auth
     val user: LiveData<User>
         get() = _user
 
@@ -37,10 +40,12 @@ class ProfileViewModel @Inject constructor(
 
     private fun initData() = viewModelScope.launch {
 
-        val data = firebaseData.collection("user")
-            .document("DGPwMHbsFxUIgOgZbdoJcI2l0Iw1")
+        val data = firebaseAuth.uid?.let {
+            firebaseData.collection("user")
+                .document(it)
+        }
 
-        data.get().addOnSuccessListener { document ->
+        data?.get()?.addOnSuccessListener { document ->
             if (document != null) {
                 _user.value = User(
                     name = document.data?.get("name").toString(),
